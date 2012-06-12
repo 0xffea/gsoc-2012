@@ -15,7 +15,7 @@ main(int argc, char *argv[])
 	socklen_t optlen;
 
 	/* IPPROTO_DCCP 33 */
-	sock = socket(2, 2, 33);
+	sock = socket(2, 6, 33);
 	if (sock == -1) {
 		perror("socket");
 		exit(1);
