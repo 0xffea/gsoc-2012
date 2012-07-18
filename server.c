@@ -4,6 +4,7 @@
 
 #include <sys/types.h>
 #include <sys/socket.h>
+#include <sys/uio.h>
 
 int
 main(int argc, char *argv[])
@@ -15,6 +16,8 @@ main(int argc, char *argv[])
 	int error;
 	socklen_t optlen;
 	socklen_t remotelen;
+	ssize_t recv_len;
+	char *recv_buf[128];
 
 	/* IPPROTO_DCCP 33 */
 	sock = socket(2, 6, 33);
@@ -44,19 +47,15 @@ main(int argc, char *argv[])
 
 	bzero(&sin, sizeof (sin));
 	sin.sin_family = AF_INET;
-	sin.sin_port = htons(37000);
+	sin.sin_port = htons(3700);
 	sin.sin_addr.s_addr = INADDR_ANY;
 
 	error = bind(sock, (struct sockaddr *)&sin, sizeof (sin));
 	if (error == -1) {
 		perror("bind");
-		//exit(1);
+		exit(1);
 	}
-/*
-	bzero(&remote, sizeof (remote));
-	remote.sin_family = AF_INET;
-	remote.sin_port = htons(0);
-*/
+
 	optlen = sizeof (optval);
 	error = getsockopt(sock, SOL_SOCKET, SO_DEBUG, &optval,
 	    &optlen);
@@ -86,6 +85,14 @@ main(int argc, char *argv[])
 	if (error == -1) {
 		perror("accept");
 	}
-	
+
+	recv_len = recv(sock, &recv_buf, 128, 0);
+	if (recv_len == -1) {
+		perror("recv");
+		exit(1);
+	}
+
+	printf("received %d bytes", recv_len);
+
 	return (0);
 }
