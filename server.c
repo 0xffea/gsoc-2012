@@ -12,6 +12,7 @@ main(int argc, char *argv[])
 	struct sockaddr_in sin;
 	struct sockaddr_in remote;
 	int sock;
+	int recv_sock;
 	int optval;
 	int error;
 	socklen_t optlen;
@@ -81,12 +82,12 @@ main(int argc, char *argv[])
 
 	bzero(&remote, sizeof (remote));
 	remotelen = sizeof (remote);
-	error = accept(sock, (struct sockaddr *)&remote, &remotelen);
-	if (error == -1) {
+	recv_sock = accept(sock, (struct sockaddr *)&remote, &remotelen);
+	if (recv_sock == -1) {
 		perror("accept");
 	}
 
-	recv_len = recv(sock, &recv_buf, 128, 0);
+	recv_len = recv(recv_sock, &recv_buf, 128, 0);
 	if (recv_len == -1) {
 		perror("recv");
 		exit(1);
