@@ -87,13 +87,22 @@ main(int argc, char *argv[])
 		perror("accept");
 	}
 
-	recv_len = recv(recv_sock, &recv_buf, 128, 0);
-	if (recv_len == -1) {
-		perror("recv");
-		exit(1);
-	}
+	while (B_TRUE) {
+		recv_len = recv(recv_sock, &recv_buf, 128, 0);
+		if (recv_len == -1) {
+			perror("recv");
+			exit(1);
+		}
 
-	printf("received %d bytes", recv_len);
+		printf("received %d bytes\n", recv_len);
+		printf("---%s---\n", recv_buf);
+
+		recv_len = send(recv_sock, "HELLO", sizeof ("HELLO"), 0);
+		if (recv_len == -1) {
+			perror("send");
+			exit (1);
+		}
+	}
 
 	return (0);
 }
