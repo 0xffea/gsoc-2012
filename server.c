@@ -48,7 +48,7 @@ main(int argc, char *argv[])
 
 	bzero(&sin, sizeof (sin));
 	sin.sin_family = AF_INET;
-	sin.sin_port = htons(37000);
+	sin.sin_port = htons(3700);
 	sin.sin_addr.s_addr = INADDR_ANY;
 
 	error = bind(sock, (struct sockaddr *)&sin, sizeof (sin));

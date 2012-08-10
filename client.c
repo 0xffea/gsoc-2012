@@ -45,7 +45,8 @@ main(int argc, char *argv[])
 	bzero(&sin, sizeof (sin));
 	sin.sin_family = AF_INET;
 	sin.sin_port = htons(37000);
-	memcpy(&(sin.sin_addr.s_addr), hp->h_addr, hp->h_length);
+	//memcpy(&(sin.sin_addr.s_addr), hp->h_addr, hp->h_length);
+	inet_pton(AF_INET, "192.168.2.20", &(sin.sin_addr));
 
 	error = connect(sock, (struct sockaddr *)&sin, sizeof (sin));
 	if (error == -1) {
